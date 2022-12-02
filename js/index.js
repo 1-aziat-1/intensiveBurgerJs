@@ -1,3 +1,4 @@
+import { cartInit } from "./cart.js";
 import { createCardProduct } from "./createCardProduct.js";
 import { 
   catalogList,
@@ -7,20 +8,6 @@ import { navigationListContoller } from "./navigationListContoller.js";
 import { openModal } from "./openModal.js";
 import { renderListProduct } from "./renderListProduct.js";
 
-
-const burgerMax = {
-  title: 'burger Mask',
-  price: 10000,
-  weight: 5000,
-  calories: 15000,
-  description: 'ogromn',
-  image: '../img/burger2.jpg',
-  ingredients: [
-    'bulocjhka',
-    'meso',
-  ]
-}
-
 catalogList.addEventListener('click',(event) => {
   const target = event.target;
 
@@ -28,8 +15,8 @@ catalogList.addEventListener('click',(event) => {
         target.closest('.product__detail') || 
         target.closest('.product__image')
       ) {
-    openModal(burgerMax);
-    
+    const id = target.closest('.product').dataset.idProduct;
+    openModal(id);
   }
 });
 
@@ -46,7 +33,8 @@ modalProduct.addEventListener('click',(event) => {
 
 const init = () => {
   renderListProduct();
-  navigationListContoller();
+  navigationListContoller(renderListProduct);
+  cartInit();
 };
 
 init();
