@@ -108,6 +108,11 @@ const removeCart = (id) => {
   updateCartList(cartList);
 };
 
+const clearCart = () => {
+  localStorage.removeItem('cart');
+  renderCartList()
+};
+
 const cartController = () => {
   const cartList = getCart();
   catalogList.addEventListener('click', ({target}) => {
@@ -119,7 +124,7 @@ const cartController = () => {
   modalProductBtn.addEventListener('click', () => {
     addCart(
       modalProductBtn.dataset.idProduct,
-      parseInt(countAmount.textContent),
+      parseInt(countAmount.textContent)
     )
   });
 
@@ -142,6 +147,7 @@ const cartController = () => {
   })
 
   orderSubmit.addEventListener('click', () => {
+    order.classList.remove('order_open');
     modalDelivery.classList.add('modal_open');
   })
 
@@ -157,5 +163,5 @@ const cartController = () => {
 export const cartInit = () => {
   cartController();
   renderCartList();
-  orderController(getCart);
+  orderController(getCart, clearCart);
 };

@@ -1,7 +1,10 @@
-import { modalDeliveryForm } from "./elements.js"
+import {
+  modalDelivery,
+  modalDeliveryForm,
+} from "./elements.js";
 
-export const orderController = (getCart) => {
-  modalDeliveryForm.addEventListener('change', () => {
+export const orderController = (getCart, clearCart) => {
+  const checkDelivery = () => {
     if (modalDeliveryForm.format.value === 'pickup') {
       modalDeliveryForm['address-info'].classList.
         add('modal-delivery__fieldset-input_hide')
@@ -11,7 +14,9 @@ export const orderController = (getCart) => {
       modalDeliveryForm['address-info'].classList.
         remove('modal-delivery__fieldset-input_hide');
     }
-  });
+  };
+
+  modalDeliveryForm.addEventListener('change', checkDelivery);
 
   modalDeliveryForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -24,6 +29,11 @@ export const orderController = (getCart) => {
       body: JSON.stringify(data),
     })
       .then(res => res.json())
-      .then(data => console.log(data));
-  })
+      .then(data => {
+        clearCart();
+        modalDeliveryForm.reset();
+        checkDelivery();
+        modalDelivery.remove('modal_open');
+      });
+  });
 };
